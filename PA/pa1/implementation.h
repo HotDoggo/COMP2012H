@@ -65,6 +65,8 @@ int extendedGCD(int a, int b, int &x, int &y)
  * If n has no inverse modulo m, output error message and return 0.
  * You may refer to the extended Euclid's algorithm: https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Modular_integers
  *
+ * stolen code lmao https://www.geeksforgeeks.org/multiplicative-inverse-under-modulo-m/
+ *
  * @return The inverse modulo m of n. If an inverse does not exist, return 0.
  */
 unsigned int inverseMod(unsigned int n, unsigned int m)
@@ -81,6 +83,8 @@ unsigned int inverseMod(unsigned int n, unsigned int m)
 /**
  * Calculates the power p of n modulo m.
  * In other words: powMod(n, p, m) = (n ^ p) mod m
+ *
+ * stolen code lmao https://www.codespeedy.com/modular-exponentiation-in-cpp-power-in-modular/
  *
  * @returns The result of the calculation.
  */
@@ -151,7 +155,7 @@ unsigned int hashTransaction(const Transaction &transaction)
 
 	// return (sum % HASH_MODULO);
 
-	return ((hashString(transaction.sender->name) + hashString(transaction.receiver->name) + transaction.amount) % HASH_MODULO);
+	return (hashString(transaction.sender->name) + hashString(transaction.receiver->name) + transaction.amount) % HASH_MODULO;
 }
 
 /**
@@ -184,7 +188,7 @@ void signTransaction(Transaction &transaction, const User &signee)
  */
 bool verifyTransaction(const Transaction &transaction)
 {
-	return powMod(transaction.signature, transaction.sender->public_key, transaction.sender->modulus) == (hashTransaction(transaction) % HASH_MODULO);
+	return powMod(transaction.signature, transaction.sender->public_key, transaction.sender->modulus) == hashTransaction(transaction) % transaction.sender->modulus;
 }
 
 /**
@@ -243,7 +247,7 @@ void addTransaction(Block &block, Transaction *const transaction)
 		cout << "Block capacity is full." << endl;
 		return;
 	}
-	if (verifyTransaction(*transaction))
+	if (!verifyTransaction(*transaction))
 	{ // TODO: Replace condition with "If the transaction does not have valid signature"
 		cout << "Transaction signature verification failed." << endl;
 		return;
@@ -278,10 +282,7 @@ unsigned int hashBlock(const Block &block)
  */
 bool verifyBlock(const Block &block)
 {
-
-	// TODO
-
-	return false;
+	return !hashBlock(block);
 }
 
 //==============================================//
@@ -295,8 +296,8 @@ bool verifyBlock(const Block &block)
  */
 void addBlock(Block &block, Blockchain &chain)
 {
-
-	// TODO
+	chain.blocks[chain.numBlocks] = &block;
+	chain.numBlocks++;
 }
 
 /**
@@ -316,7 +317,16 @@ void publishBlock(Block &block, Blockchain &chain, unsigned int digest)
 		return;
 	}
 
-	// TODO
+	block.prevBlockDigest = digest;
+	for (int i = 0; i < HASH_MODULO; i++)
+	{
+		block.digest = i;
+		if (verifyBlock(block))
+		{
+			addBlock(block, chain);
+			return;
+		}
+	}
 }
 
 /**
@@ -328,9 +338,11 @@ void publishBlock(Block &block, Blockchain &chain, unsigned int digest)
  */
 Block *findBlock(const Blockchain &chain, unsigned int digest)
 {
-
-	// TODO
-
+	for (int i = 0; i < chain.numBlocks; i++)
+	{
+		if (chain.blocks[i]->digest == digest)
+			return chain.blocks[i];
+	}
 	return nullptr;
 }
 
@@ -352,10 +364,67 @@ Block *findBlock(const Blockchain &chain, unsigned int digest)
  */
 Block *findTail(const Blockchain &chain)
 {
+	if (!chain.numBlocks)
+		return nullptr;
 
-	// TODO
+	// initialize arrays
+	Block **current_tail_blocks = new Block *[chain.numBlocks + 1];
+	Block **possible_tail_blocks = new Block *[chain.numBlocks + 1];
+	// for (int i = 0; i < chain.numBlocks; i++)
+	// {
+	// 	current_tail_blocks[i] = nullptr;
+	// 	possible_tail_blocks[i] = nullptr;
+	// }
 
-	return nullptr;
+	int num_current_tail_blocks = 0, num_possible_tail_blocks;
+
+	// step 1
+	for (int i = 0; i < chain.numBlocks; i++)
+	{
+		if (chain.blocks[i]->prevBlockDigest == HASH_MODULO)
+		{
+			current_tail_blocks[num_current_tail_blocks++] = chain.blocks[i];
+		}
+	}
+
+	while (1)
+	{
+		num_possible_tail_blocks = 0;
+
+		// go through the blockchain, find the ones with a prev block digest, see if it equals to one of the current tail block digest
+		for (int i = 0; i < chain.numBlocks; i++)
+		{
+			if (chain.blocks[i]->prevBlockDigest != HASH_MODULO)
+			{
+				for (int j = 0; j < num_current_tail_blocks; j++)
+				{
+					if (chain.blocks[i]->prevBlockDigest == current_tail_blocks[j]->digest)
+					{
+						possible_tail_blocks[num_possible_tail_blocks++] = chain.blocks[i];
+					}
+				}
+			}
+		}
+
+		if (!num_possible_tail_blocks)
+			break;
+
+		current_tail_blocks = possible_tail_blocks;
+		num_current_tail_blocks = num_possible_tail_blocks;
+	}
+
+	Block *tail_block = current_tail_blocks[0];
+
+	// free the temp arrays
+	for (int i = 0; i < chain.numBlocks; i++)
+	{
+		delete[] current_tail_blocks[i];
+		delete[] possible_tail_blocks[i];
+	}
+	delete[] current_tail_blocks;
+	delete[] possible_tail_blocks;
+
+	return tail_block;
 }
 
 /**
@@ -366,8 +435,10 @@ Block *findTail(const Blockchain &chain)
  */
 void printBlockchain(const Blockchain &chain, Block *const tail)
 {
-
-	// TODO
+	if (tail->prevBlockDigest == HASH_MODULO)
+		printBlock(*tail);
+	else
+		printBlockchain(chain, findBlock(chain, tail->prevBlockDigest));
 }
 
 //==============================================//
@@ -381,8 +452,11 @@ void printBlockchain(const Blockchain &chain, Block *const tail)
  */
 void clearBlock(Block *block)
 {
-
-	// TODO
+	for (int i = 0; i < block->numTransactions; i++)
+	{
+		delete[] block->transactions[i];
+	}
+	delete[] block;
 }
 
 /**
@@ -391,8 +465,10 @@ void clearBlock(Block *block)
  */
 void clearBlockchain(Blockchain &chain)
 {
-
-	// TODO
+	for (int i = 0; i < chain.numBlocks; i++)
+	{
+		clearBlock(chain.blocks[i]);
+	}
 }
 
 #endif // __IMPLEMENTATION_H__

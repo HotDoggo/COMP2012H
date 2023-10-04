@@ -2,7 +2,8 @@
 #include "implementation.h"
 using namespace std;
 
-int main() {
+int main()
+{
     cout << "//==============================================//" << endl;
     cout << "//        PART 1: MATHEMATICAL FUNCTIONS        //" << endl;
     cout << "//==============================================//" << endl;
@@ -30,12 +31,14 @@ int main() {
     cout << "//==============================================//" << endl;
     cout << endl;
 
-    User* testUser = createUser((char*)"Test", 7, 23, 187);
-    if (testUser) {
+    User *testUser = createUser((char *)"Test", 7, 23, 187);
+    if (testUser)
+    {
         cout << "User has name " << testUser->name << ", e = " << testUser->public_key << ", d = " << testUser->private_key << ", N = " << testUser->modulus << endl;
         delete testUser;
     }
-    else {
+    else
+    {
         cout << "Unimplemented task." << endl;
     }
     cout << endl;
@@ -45,9 +48,9 @@ int main() {
     cout << "//==============================================//" << endl;
     cout << endl;
 
-    User alice {(char*)"Alice", 23, 7, 187};
-    User bob {(char*)"Bob", 53, 5, 299};
-    Transaction t {&alice, &bob, 1000};
+    User alice{(char *)"Alice", 23, 7, 187};
+    User bob{(char *)"Bob", 53, 5, 299};
+    Transaction t{&alice, &bob, 1000};
 
     cout << "Transaction has hash " << hashTransaction(t) << endl;
     cout << "Transaction is signed: " << verifyTransaction(t) << endl;
@@ -55,13 +58,15 @@ int main() {
     cout << "Transaction is signed: " << verifyTransaction(t) << endl;
     cout << endl;
 
-    Transaction* testTransaction = createTransaction(&bob, &alice, 2000);
-    if (testTransaction) {
+    Transaction *testTransaction = createTransaction(&bob, &alice, 2000);
+    if (testTransaction)
+    {
         printTransaction(*testTransaction);
         cout << "Transaction is signed: " << verifyTransaction(*testTransaction) << endl;
         delete testTransaction;
     }
-    else {
+    else
+    {
         cout << "Unimplemented task." << endl;
     }
     cout << endl;
@@ -71,23 +76,27 @@ int main() {
     cout << "//==============================================//" << endl;
     cout << endl;
 
-    Block* testBlock = createBlock(5);
-    if (testBlock) {
+    Block *testBlock = createBlock(5);
+    if (testBlock)
+    {
         printBlock(*testBlock);
         delete testBlock;
     }
-    else {
+    else
+    {
         cout << "Unimplemented task." << endl;
     }
 
-    Block b {0, 0, 1, {&t}, 0};
-    Transaction t2 {&bob, &alice, 500};
+    Block b{0, 0, 1, {&t}, 0};
+    Transaction t2{&bob, &alice, 500};
     signTransaction(t2, bob);
     addTransaction(b, &t2);
     printBlock(b);
     cout << "Block has hash " << hashBlock(b) << endl;
+    // cout << b.digest << endl;
     cout << "Block is valid: " << verifyBlock(b) << endl;
     b.digest = 5185;
+    // cout << b.digest << endl;
     cout << "Block is valid: " << verifyBlock(b) << endl;
     cout << endl;
 }
