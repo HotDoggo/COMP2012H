@@ -1,0 +1,49 @@
+//==============================================//
+//        PART 1: MATHEMATICAL FUNCTIONS        //
+//==============================================//
+
+7 is prime: true
+187 is prime: false
+10369 is prime: true
+
+GCD of 48 and 36 is: 12
+GCD of 120 and 91 is: 1
+
+Inverse of 23 modulo 160 is: 7
+Inverse of 61 modulo 198 is: 13
+
+7 ^ 6 mod 23 = 4
+183 ^ 23 mod 187 = 123
+
+//==============================================//
+//            PART 2: USER FUNCTIONS            //
+//==============================================//
+
+User has name Test, e = 7, d = 23, N = 187
+
+//==============================================//
+//        PART 3: TRANSACTION FUNCTIONS         //
+//==============================================//
+
+Transaction has hash 1753
+Transaction is signed: false
+Transaction is signed: true
+
+Bob pays Alice 2000 units. Signature: 121
+Transaction is signed: true
+
+//==============================================//
+//           PART 4: BLOCK FUNCTIONS            //
+//==============================================//
+
+Block id: 5
+Block digest: 0
+
+Block id: 0
+Block digest: 0
+1: Alice pays Bob 1000 units. Signature: 60
+2: Bob pays Alice 500 units. Signature: 5
+
+Block has hash 3006
+Block is valid: false
+Block is valid: true
