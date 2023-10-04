@@ -304,18 +304,18 @@ void addBlock(Block &block, Blockchain &chain)
 		return;
 	}
 
-	Block *temp = new Block[chain.numBlocks + 1];
+	Block **temp = new Block *[chain.numBlocks + 1];
 	for (int i = 0; i < chain.numBlocks; i++)
 	{
-		temp[i] = *chain.blocks[i];
+		temp[i] = chain.blocks[i];
 	}
 
-	temp[chain.numBlocks] = block;
+	temp[chain.numBlocks] = &block;
 
 	delete[] chain.blocks;
 
-	*chain.blocks = temp;
-	delete[] temp;
+	chain.blocks = temp;
+	chain.numBlocks++;
 }
 
 /**
@@ -422,18 +422,16 @@ Block *findTail(const Blockchain &chain)
 		if (!num_possible_tail_blocks)
 			break;
 
-		current_tail_blocks = possible_tail_blocks;
+		for (int i = 0; i < num_possible_tail_blocks; i++)
+		{
+			current_tail_blocks[i] = possible_tail_blocks[i];
+		}
 		num_current_tail_blocks = num_possible_tail_blocks;
 	}
 
 	Block *tail_block = current_tail_blocks[0];
 
 	// free the temp arrays
-	for (int i = 0; i < chain.numBlocks; i++)
-	{
-		delete[] current_tail_blocks[i];
-		delete[] possible_tail_blocks[i];
-	}
 	delete[] current_tail_blocks;
 	delete[] possible_tail_blocks;
 
@@ -448,10 +446,11 @@ Block *findTail(const Blockchain &chain)
  */
 void printBlockchain(const Blockchain &chain, Block *const tail)
 {
-	if (tail->prevBlockDigest == HASH_MODULO)
-		printBlock(*tail);
-	else
+	if (tail->prevBlockDigest != HASH_MODULO)
+	{
 		printBlockchain(chain, findBlock(chain, tail->prevBlockDigest));
+	}
+	printBlock(*tail);
 }
 
 //==============================================//
@@ -467,7 +466,7 @@ void clearBlock(Block *block)
 {
 	for (int i = 0; i < block->numTransactions; i++)
 	{
-		delete[] block->transactions[i];
+		delete block->transactions[i];
 	}
 	delete[] block;
 }
@@ -482,6 +481,7 @@ void clearBlockchain(Blockchain &chain)
 	{
 		clearBlock(chain.blocks[i]);
 	}
+	delete[] chain.blocks;
 }
 
 #endif // __IMPLEMENTATION_H__
