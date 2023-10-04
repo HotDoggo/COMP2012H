@@ -296,8 +296,26 @@ bool verifyBlock(const Block &block)
  */
 void addBlock(Block &block, Blockchain &chain)
 {
-	chain.blocks[chain.numBlocks] = &block;
-	chain.numBlocks++;
+	if (chain.blocks == nullptr)
+	{
+		chain.blocks = new Block *[1];
+		chain.numBlocks++;
+		chain.blocks[0] = &block;
+		return;
+	}
+
+	Block *temp = new Block[chain.numBlocks + 1];
+	for (int i = 0; i < chain.numBlocks; i++)
+	{
+		temp[i] = *chain.blocks[i];
+	}
+
+	temp[chain.numBlocks] = block;
+
+	delete[] chain.blocks;
+
+	*chain.blocks = temp;
+	delete[] temp;
 }
 
 /**
@@ -368,13 +386,8 @@ Block *findTail(const Blockchain &chain)
 		return nullptr;
 
 	// initialize arrays
-	Block **current_tail_blocks = new Block *[chain.numBlocks + 1];
-	Block **possible_tail_blocks = new Block *[chain.numBlocks + 1];
-	// for (int i = 0; i < chain.numBlocks; i++)
-	// {
-	// 	current_tail_blocks[i] = nullptr;
-	// 	possible_tail_blocks[i] = nullptr;
-	// }
+	Block **current_tail_blocks = new Block *[chain.numBlocks];
+	Block **possible_tail_blocks = new Block *[chain.numBlocks];
 
 	int num_current_tail_blocks = 0, num_possible_tail_blocks;
 

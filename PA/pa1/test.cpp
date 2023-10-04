@@ -99,4 +99,29 @@ int main()
     // cout << b.digest << endl;
     cout << "Block is valid: " << verifyBlock(b) << endl;
     cout << endl;
+
+    cout << "//==============================================//" << endl;
+    cout << "//      PART 5: WHATEVER THE FUCK IM DOING      //" << endl;
+    cout << "//==============================================//" << endl;
+    cout << endl;
+
+    Blockchain test{0, nullptr};
+    Block *curBlock = createBlock();
+
+    User A{(char *)"A", 23, 7, 187};
+    User B{(char *)"B", 53, 5, 299};
+
+    Transaction *temp = createTransaction(&A, &B, 100);
+    signTransaction(*temp, A);
+    addTransaction(*curBlock, temp);
+
+    publishBlock(*curBlock, test, HASH_MODULO);
+    printBlock(*curBlock);
+
+    printBlock(*findTail(test));
+
+    cout << curBlock->id << " " << curBlock->digest << endl;
+
+    cout << endl;
+    printBlockchain(test, findTail(test));
 }
