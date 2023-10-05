@@ -466,9 +466,11 @@ void clearBlock(Block *block)
 {
 	for (int i = 0; i < block->numTransactions; i++)
 	{
+		delete[] block->transactions[i]->sender->name;
+		delete[] block->transactions[i]->receiver->name;
 		delete block->transactions[i];
 	}
-	delete[] block;
+	delete block;
 }
 
 /**
