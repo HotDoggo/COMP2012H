@@ -144,19 +144,6 @@ User *createUser(char *name, unsigned int e, unsigned int d, unsigned int N)
  */
 unsigned int hashTransaction(const Transaction &transaction)
 {
-	// int sum = transaction.amount;
-	// int i = 0, j = 0;
-	// while (transaction.sender->name[i] != '\0')
-	// {
-	// 	sum += transaction.sender->name[i++];
-	// }
-	// while (transaction.receiver->name[j] != '\0')
-	// {
-	// 	sum += transaction.receiver->name[j++];
-	// }
-
-	// return (sum % HASH_MODULO);
-
 	return (hashString(transaction.sender->name) + hashString(transaction.receiver->name) + transaction.amount) % HASH_MODULO;
 }
 
@@ -310,22 +297,13 @@ void addBlock(Block &block, Blockchain &chain)
 	for (int i = 0; i < chain.numBlocks; i++)
 	{
 		temp[i] = chain.blocks[i];
-		delete chain.blocks[i];
 	}
 	temp[chain.numBlocks] = &block;
 
 	delete[] chain.blocks;
 
 	chain.blocks = temp;
-
-	for (int i = 0; i < chain.numBlocks; i++)
-	{
-		delete temp[i];
-	}
-
 	chain.numBlocks++;
-
-	delete[] temp;
 }
 
 /**
