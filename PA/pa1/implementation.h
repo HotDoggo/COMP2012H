@@ -301,8 +301,8 @@ void addBlock(Block &block, Blockchain &chain)
 	if (chain.blocks == nullptr)
 	{
 		chain.blocks = new Block *[1];
-		chain.numBlocks++;
 		chain.blocks[0] = &block;
+		chain.numBlocks++;
 		return;
 	}
 
@@ -310,13 +310,19 @@ void addBlock(Block &block, Blockchain &chain)
 	for (int i = 0; i < chain.numBlocks; i++)
 	{
 		temp[i] = chain.blocks[i];
+		delete chain.blocks[i];
 	}
-
 	temp[chain.numBlocks] = &block;
 
 	delete[] chain.blocks;
 
 	chain.blocks = temp;
+
+	for (int i = 0; i < chain.numBlocks; i++)
+	{
+		delete temp[i];
+	}
+
 	chain.numBlocks++;
 
 	delete[] temp;
@@ -472,6 +478,7 @@ void clearBlock(Block *block)
 	{
 		delete block->transactions[i];
 	}
+	delete block;
 }
 
 /**
@@ -483,8 +490,8 @@ void clearBlockchain(Blockchain &chain)
 	for (int i = 0; i < chain.numBlocks; i++)
 	{
 		clearBlock(chain.blocks[i]);
-		delete chain.blocks[i];
 	}
+	delete[] chain.blocks;
 }
 
 #endif // __IMPLEMENTATION_H__
