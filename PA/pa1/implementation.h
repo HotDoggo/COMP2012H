@@ -123,8 +123,7 @@ unsigned int powMod(unsigned int n, unsigned int p, unsigned int m)
 User *createUser(char *name, unsigned int e, unsigned int d, unsigned int N)
 {
 	User *user = new User;
-	user->name = new char[strlen(name) + 1];
-	strcpy(user->name, name);
+	user->name = name;
 	user->public_key = e;
 	user->private_key = d;
 	user->modulus = N;
@@ -435,9 +434,7 @@ Block *findTail(const Blockchain &chain)
 void printBlockchain(const Blockchain &chain, Block *const tail)
 {
 	if (tail->prevBlockDigest != HASH_MODULO)
-	{
 		printBlockchain(chain, findBlock(chain, tail->prevBlockDigest));
-	}
 	printBlock(*tail);
 }
 
