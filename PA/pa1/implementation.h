@@ -19,6 +19,8 @@ using namespace std;
  */
 bool isPrime(unsigned int n)
 {
+	if (n == 1)
+		return false;
 	for (int i = 2; i <= n / 2; i++)
 	{
 		if (n % i == 0)
@@ -316,6 +318,8 @@ void addBlock(Block &block, Blockchain &chain)
 
 	chain.blocks = temp;
 	chain.numBlocks++;
+
+	delete[] temp;
 }
 
 /**
@@ -466,11 +470,8 @@ void clearBlock(Block *block)
 {
 	for (int i = 0; i < block->numTransactions; i++)
 	{
-		delete[] block->transactions[i]->sender->name;
-		delete[] block->transactions[i]->receiver->name;
 		delete block->transactions[i];
 	}
-	delete block;
 }
 
 /**
@@ -482,8 +483,8 @@ void clearBlockchain(Blockchain &chain)
 	for (int i = 0; i < chain.numBlocks; i++)
 	{
 		clearBlock(chain.blocks[i]);
+		delete chain.blocks[i];
 	}
-	delete[] chain.blocks;
 }
 
 #endif // __IMPLEMENTATION_H__
