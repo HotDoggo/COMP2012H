@@ -1,0 +1,49 @@
+//==============================================//
+//         PART 1: TIMESTAMP FUNCTIONS          //
+//==============================================//
+
+init time is 00-00-00
+current time is 03-49-10
+current time is 03-49-22
+
+//==============================================//
+//            PART 2: USER FUNCTIONS            //
+//==============================================//
+
+User has name Test, e = 7, days = 1, N = 187
+Now the user has 2
+Now the user has 0
+Now the user has 1
+
+//==============================================//
+//        PART 3: TRANSACTION FUNCTIONS         //
+//==============================================//
+
+Transaction is signed: 1
+Test pays Test2 1 units. Signature: 16
+
+//==============================================//
+//           PART 4: BLOCK FUNCTIONS            //
+//==============================================//
+
+Block digest: 0
+1: Test pays Test2 1 units. Signature: 16
+2: Test2 pays Test 3 units. Signature: 157
+
+
+//==============================================//
+//         PART 5: BLOCKCHAIN FUNCTIONS         //
+//==============================================//
+
+Block digest: 6025
+Block timestamp: 03-49-22
+1: Test pays Test2 1 units. Signature: 16
+2: Test2 pays Test 3 units. Signature: 157
+
+
+//==============================================//
+//          PART 6: CONSENSUS FUNCTIONS         //
+//==============================================//
+
+The expected validator is Charles
+The validator is Charles
