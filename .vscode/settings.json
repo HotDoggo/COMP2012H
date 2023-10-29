@@ -1,6 +1,7 @@
 {
-    "files.associations": {
-        "new": "cpp",
-        "iostream": "cpp"
-    }
+  "files.associations": {
+    "new": "cpp",
+    "iostream": "cpp",
+    "string_view": "cpp"
+  }
 }

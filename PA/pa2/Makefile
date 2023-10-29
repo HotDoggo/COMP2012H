@@ -25,6 +25,6 @@ PA2_test.exe: $(OBJS_TEST)
 	g++ $(CPPFLAGS) -MMD -MP -c $< -o $@
 
 clean:;
-	rm *.o *.exe *.d
+	del *.o *.exe *.d
 # del *.o *.exe *.d  #for Windows
 
