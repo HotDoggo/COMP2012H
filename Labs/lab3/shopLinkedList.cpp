@@ -48,9 +48,7 @@ void deleteShop(Shop *shop)
 void addItem(Shop *shop, const FoodItem &item)
 {
     // init item
-    ShopNode *new_item = new ShopNode;
-    new_item->item = item;
-    new_item->next = nullptr;
+    ShopNode *new_item = new ShopNode{item, nullptr};
 
     if (shop->head == nullptr)
     {
@@ -108,10 +106,6 @@ void removeItem(Shop *shop, const FoodItem &item)
         prev = cur;
         cur = cur->next;
     }
-
-    // ShopNode *cur;
-    // for (cur = shop->head; !compareFoodItems(cur->next->item, item) && cur->next != nullptr;)
-    //     cur = cur->next;
 }
 
 /**

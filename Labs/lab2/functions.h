@@ -17,7 +17,6 @@ bool equalCourses(const Course &c1, const Course &c2)
  */
 bool isCourseEnrolled(const Student &student, const Course &course)
 {
-    // TODO
     for (int i = 0; i < student.numEnrolledCourses; i++)
     {
         if (equalCourses(course, *student.enrolledCourses[i]))
@@ -33,7 +32,6 @@ bool isCourseEnrolled(const Student &student, const Course &course)
  */
 bool isCourseWaitlisted(const Student &student, const Course &course)
 {
-    // TODO
     for (int i = 0; i < student.numWaitlistCourses; i++)
     {
         if (equalCourses(course, *student.waitlistCourses[i]))
@@ -47,7 +45,6 @@ bool isCourseWaitlisted(const Student &student, const Course &course)
  */
 int creditsRegistered(const Student &student)
 {
-    // TODO
     int total_credits = 0;
     for (int i = 0; i < student.numEnrolledCourses; i++)
     {
@@ -85,11 +82,6 @@ void registerCourse(Student &student, Course *const course)
     // TODO
     if (student.waitlistCourses == nullptr)
         student.waitlistCourses = new Course *[10];
-    // student.waitlistCourses[student.numWaitlistCourses]->code = course->code;
-    // student.waitlistCourses[student.numWaitlistCourses]->ext = course->ext;
-    // student.waitlistCourses[student.numWaitlistCourses]->credits = course->credits;
-    // student.waitlistCourses[student.numWaitlistCourses]->subject = new char[strlen(course->subject) + 1];
-    // strcpy(student.waitlistCourses[student.numWaitlistCourses]->subject, course->subject);
     student.waitlistCourses[student.numWaitlistCourses] = course;
     student.numWaitlistCourses++;
 

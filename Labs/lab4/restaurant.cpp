@@ -37,17 +37,14 @@ Restaurant::Restaurant(int n_Fishes, int n_Potatoes, int n_Dishes) : numFish(0),
    =================================================== */
 Restaurant::Restaurant(const Restaurant &other) : numFish(other.numFish), numPotatoes(other.numPotatoes), numDishes(other.numDishes), maxNumFish(other.maxNumFish), maxNumPotatoes(other.maxNumPotatoes), maxNumDishes(other.maxNumDishes), fishStorage(new Fish *[other.maxNumFish]), potatoStorage(new Potato *[other.maxNumPotatoes]), dishStorage(new Dish *[other.maxNumDishes])
 {
-    // TODO: Clone the fish storage.
     for (int i = 0; i < other.numFish; i++)
     {
         fishStorage[i] = new Fish(*other.fishStorage[i]);
     }
-    // TODO: Clone the potato storage.
     for (int i = 0; i < other.numPotatoes; i++)
     {
         potatoStorage[i] = new Potato(*other.potatoStorage[i]);
     }
-    // TODO: Clone the dish storage.
     for (int i = 0; i < other.numDishes; i++)
     {
         dishStorage[i] = new Dish(*other.dishStorage[i]);
@@ -61,19 +58,16 @@ Restaurant::Restaurant(const Restaurant &other) : numFish(other.numFish), numPot
    =================================================== */
 Restaurant::~Restaurant()
 {
-    // TODO: Destruct the fish storage.
     for (int i = 0; i < numFish; i++)
     {
         delete fishStorage[i];
     }
     delete[] fishStorage;
-    // TODO: Destruct the potato storage.
     for (int i = 0; i < numPotatoes; i++)
     {
         delete potatoStorage[i];
     }
     delete[] potatoStorage;
-    // TODO: Destruct the dish storage.
     for (int i = 0; i < numDishes; i++)
     {
         delete dishStorage[i];
@@ -103,7 +97,6 @@ void Restaurant::storePotato()
     }
     else
     {
-        // TODO: store a unit of potato by allocating a Potato object.
         potatoStorage[numPotatoes++] = new Potato();
     }
 }
@@ -135,7 +128,6 @@ void Restaurant::cookDish()
 
 void Restaurant::serveDish()
 {
-    // TODO: Serve all Dishs by deleting each of them in the dishStorage
     for (int i = 0; i < numDishes; i++)
     {
         delete dishStorage[i];
