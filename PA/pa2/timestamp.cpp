@@ -17,7 +17,7 @@ unsigned long long time_pseudo()
  * Construct the Timestamp instance.
  * Initialize all data members to 0.
  */
-Timestamp::Timestamp() : hour(0), minute(0), second(0)
+Timestamp::Timestamp() : hour(0), minute(0), second(0), unix_time(0)
 {
 }
 
@@ -31,9 +31,9 @@ Timestamp::Timestamp() : hour(0), minute(0), second(0)
 void Timestamp::updateTime()
 {
     unix_time = time_pseudo();
-    hour = unix_time % (60 * 60 * 24) % 60;
-    minute = unix_time % (60 * 60 * 24) / 60 % 60;
-    second = unix_time % (60 * 60 * 24) / (60 * 60);
+    hour = unix_time % (60 * 60 * 24) / (60 * 60);
+    minute = (unix_time % (60 * 60 * 24) % (60 * 60)) / 60;
+    second = unix_time % (60 * 60 * 24) % 60;
 }
 
 /**
@@ -48,7 +48,7 @@ void Timestamp::updateTime()
  */
 char *Timestamp::getTime() const
 {
-    char *temp = new char;
+    char temp[9];
     sprintf(temp, "%02d-%02d-%02d", hour, minute, second);
     return temp;
 }

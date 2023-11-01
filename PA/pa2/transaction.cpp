@@ -16,7 +16,6 @@ Transaction::Transaction(User *sender, User *receiver, unsigned int amount)
 	this->receiver = receiver;
 	this->amount = amount;
 	this->signature = sender->signTransaction(*this);
-	// TODO
 }
 
 // The functions below are all from PA1, you can copy from the solution and make adjustments

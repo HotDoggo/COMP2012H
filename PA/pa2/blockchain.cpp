@@ -7,7 +7,7 @@ using namespace std;
  * Construct an "empty" block. Refer to PA1 for the default value of data members.
  * Set miner and timestamp to nullptr.
  */
-Block::Block() : prevBlockDigest(HASH_MODULO), transactions({nullptr}), numTransactions(0), digest(0), miner(nullptr), timestamp(nullptr)
+Block::Block() : prevBlockDigest(HASH_MODULO), transactions{nullptr}, numTransactions(0), digest(0), miner(nullptr), timestamp(nullptr)
 {
 }
 
@@ -20,9 +20,8 @@ Block::~Block()
 	{
 		delete transactions[i];
 	}
-	delete[] transactions;
-	delete miner;
-	delete timestamp;
+	delete[] miner;
+	delete[] timestamp;
 	// TODO
 }
 
@@ -33,16 +32,17 @@ Block::~Block()
  */
 void Block::setMinerFromUserPool(UserPool *pool)
 {
+	Transaction *transaction = new Transaction(pool->getManager(), pool->getValidator(), 10);
+	addTransaction(transaction);
+	miner = new char[strlen(pool->getValidator()->getName()) + 1];
 	strcpy(miner, pool->getValidator()->getName());
 }
 
 /**
  * Construct an empty blockchain.
  */
-Blockchain::Blockchain()
+Blockchain::Blockchain() : blocks(nullptr), numBlocks(0)
 {
-
-	// TODO
 }
 
 /**
@@ -51,8 +51,11 @@ Blockchain::Blockchain()
  */
 Blockchain::~Blockchain()
 {
-
-	// TODO
+	for (int i = 0; i < numBlocks; i++)
+	{
+		delete blocks[i];
+	}
+	delete[] blocks;
 }
 
 // The functions below are all from PA1, you can copy from the solution and make adjustments
@@ -66,18 +69,18 @@ Blockchain::~Blockchain()
  */
 void Block::addTransaction(Transaction *const transaction)
 {
-	if (false)
-	{ // TODO: Condition
+	if (numTransactions == MAX_TRANSACTIONS)
+	{
 		cout << "Block capacity is full." << endl;
 		return;
 	}
-	if (false)
-	{ // TODO: Condition
+	if (!transaction->verifyTransaction())
+	{
 		cout << "Transaction signature verification failed." << endl;
 		return;
 	}
 
-	// TODO
+	transactions[numTransactions++] = transaction;
 }
 
 /**
@@ -89,10 +92,12 @@ void Block::addTransaction(Transaction *const transaction)
  */
 unsigned int Block::hashBlock() const
 {
-
-	// TODO
-
-	return 0;
+	unsigned int sumTransaction = 0;
+	for (int i = 0; i < numTransactions; i++)
+	{
+		sumTransaction += transactions[i]->hashTransaction();
+	}
+	return (sumTransaction + digest + hashString(timestamp)) % HASH_MODULO;
 }
 
 /**
@@ -103,10 +108,7 @@ unsigned int Block::hashBlock() const
  */
 bool Block::verifyBlock() const
 {
-
-	// TODO
-
-	return false;
+	return hashBlock() == 0;
 }
 
 // This function is given and should not be modified.
@@ -133,8 +135,13 @@ void Block::printBlock() const
  */
 void Blockchain::addBlock(Block &block)
 {
+	Block **temp = new Block *[numBlocks + 1];
+	for (int i = 0; i < numBlocks; ++i)
+		temp[i] = blocks[i];
 
-	// TODO
+	temp[numBlocks++] = &block;
+	delete[] blocks;
+	blocks = temp;
 }
 
 /**
@@ -154,7 +161,18 @@ void Blockchain::publishBlock(Block &block, unsigned int digest)
 		return;
 	}
 
-	// TODO
+	block.setPrevBlockDigest(digest);
+
+	for (int d = 0; d < HASH_MODULO; ++d)
+	{
+		block.setDigest(d);
+		if (block.verifyBlock())
+		{
+			break;
+		}
+	}
+
+	addBlock(block);
 }
 
 /**
@@ -166,9 +184,13 @@ void Blockchain::publishBlock(Block &block, unsigned int digest)
  */
 Block *Blockchain::findBlock(unsigned int digest) const
 {
-
-	// TODO
-
+	for (int i = 0; i < numBlocks; i++)
+	{
+		if (blocks[i]->getDigest() == digest)
+		{
+			return blocks[i];
+		}
+	}
 	return nullptr;
 }
 
@@ -184,10 +206,59 @@ Block *Blockchain::findBlock(unsigned int digest) const
  */
 Block *Blockchain::findTail() const
 {
+	if (numBlocks == 0)
+	{
+		return nullptr;
+	}
 
-	// TODO
+	int numPossibleTails = 0;
+	Block **curTails = new Block *[numBlocks];
+	for (int i = 0; i < numBlocks; ++i)
+	{
+		if (blocks[i]->getPrevBlockDigest() == HASH_MODULO)
+		{
+			curTails[numPossibleTails++] = blocks[i];
+		}
+	}
+	Block **possibleTails = new Block *[numBlocks];
+	for (int i = 0; i < numBlocks; ++i)
+	{
+		if (i >= numPossibleTails)
+			curTails[i] = nullptr;
+		possibleTails[i] = nullptr;
+	}
 
-	return nullptr;
+	do
+	{
+		numPossibleTails = 0;
+		for (int i = 0; i < numBlocks; ++i)
+		{
+			for (int j = 0; j < numBlocks && curTails[j]; ++j)
+			{
+				if (blocks[i]->getPrevBlockDigest() == curTails[j]->getDigest())
+				{
+					possibleTails[numPossibleTails++] = blocks[i];
+					continue;
+				}
+			}
+		}
+		if (numPossibleTails)
+		{
+			delete[] curTails;
+			curTails = possibleTails;
+			possibleTails = new Block *[numBlocks];
+			for (int i = 0; i < numBlocks; ++i)
+			{
+				possibleTails[i] = nullptr;
+			}
+		}
+	} while (numPossibleTails);
+
+	Block *ret = curTails[0];
+	delete[] curTails;
+	delete[] possibleTails;
+
+	return ret;
 }
 
 /**
@@ -198,6 +269,10 @@ Block *Blockchain::findTail() const
  */
 void Blockchain::printBlockchain(Block *tail) const
 {
-
-	// TODO
+	if (tail->getPrevBlockDigest() != HASH_MODULO)
+	{
+		// This is not the first block, print the block preceeding this one
+		printBlockchain(findBlock(tail->getPrevBlockDigest()));
+	}
+	tail->printBlock();
 }

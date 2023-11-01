@@ -10,7 +10,7 @@ using namespace std;
  */
 User::User(const char *name, unsigned int e, unsigned int d, unsigned int N)
 {
-	this->name = new char;
+	this->name = new char[strlen(name) + 1];
 	strcpy(this->name, name);
 	public_key = e;
 	private_key = d;
@@ -23,8 +23,7 @@ User::User(const char *name, unsigned int e, unsigned int d, unsigned int N)
  */
 User::~User()
 {
-	delete name;
-	// TODO
+	delete[] name;
 }
 
 /**
@@ -37,7 +36,6 @@ void User::updateDays()
 {
 	if (days < MAX_DAYS)
 		days++;
-	// TODO
 }
 
 /**
@@ -46,7 +44,6 @@ void User::updateDays()
 void User::resetDays()
 {
 	days = 0;
-	// TODO
 }
 
 /**
@@ -63,7 +60,7 @@ unsigned int User::getDays() const
  */
 unsigned int User::signTransaction(const Transaction &transaction)
 {
-	if (transaction.getSenderName() != name)
+	if (strcmp(transaction.getSenderName(), name))
 	{
 		cout << "User is not authorized to sign someone else's transaction!" << endl;
 		return 0;
