@@ -1,8 +1,9 @@
 #ifndef MYQUEUE_H
 #define MYQUEUE_H
 
-template<typename T>
-class MyQueue {
+template <typename T>
+class MyQueue
+{
 private:
     // Maximum number of items the queue can hold
     int capacity;

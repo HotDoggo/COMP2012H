@@ -4,7 +4,8 @@
 #include <iostream>
 using namespace std;
 
-class Rectangle {
+class Rectangle
+{
 private:
     int length, width;
 
