@@ -22,22 +22,24 @@
 /**
  * Construct a tab with given id and initial url specified as init_url.
  */
-Tab::Tab(int id, Url init_url) {
+Tab::Tab(int id, Url init_url)
+{
 	string prefix = "Tab_" + to_string(id) + " Create:";
-	cout << left << setw(20) << prefix << "Hello! The first page is \"" << init_url << "\"" << endl; 
+	cout << left << setw(20) << prefix << "Hello! The first page is \"" << init_url << "\"" << endl;
 
-	//Initialize
+	// Initialize
 	//=========== TODO ===================================================
-
+	this->id = id;
+	url_stack.push_back(init_url);
+	current_url = url_stack.begin();
 	//--------------------------------------------------------------------
 }
 
-
-Tab::~Tab() {
+Tab::~Tab()
+{
 	string prefix = "Tab_" + to_string(id) + " Close:";
 	cout << left << setw(20) << prefix << "Goodbye" << endl;
 }
-
 
 /**
  * Open url.
@@ -48,23 +50,27 @@ Tab::~Tab() {
  * TODO: Finish the code.
  * Remember: There is no way to go forward after you open a new url.
  */
-void Tab::open(Url url) {
+void Tab::open(Url url)
+{
 	string prefix = "Tab_" + to_string(id) + " Open:";
 	bool already;
-	//check if you already at url.
+	// check if you already at url.
 	//=========== TODO ===================================================
-
+	if (*current_url == url)
+		already = true;
 	//--------------------------------------------------------------------
 
-	if (already) {
-		cout << left << setw(20) << prefix << "Already at \"" << url << "\"" << endl; 
+	if (already)
+	{
+		cout << left << setw(20) << prefix << "Already at \"" << url << "\"" << endl;
 		return;
 	}
-	cout << left << setw(20) << prefix << "Open \"" << url << "\"" << endl; 
+	cout << left << setw(20) << prefix << "Open \"" << url << "\"" << endl;
 
-	//Go to url.
+	// Go to url.
 	//=========== TODO ===================================================
-
+	url_stack.push_back(url);
+	current_url++;
 	//--------------------------------------------------------------------
 }
 
@@ -73,24 +79,27 @@ void Tab::open(Url url) {
  *
  * TODO: Finish the code.
  */
-void Tab::backward() {
+void Tab::backward()
+{
 	string prefix = "Tab_" + to_string(id) + " Backward:";
 	bool is_bottom;
-	//Check if already at bottom of url stack.
+	// Check if already at bottom of url stack.
 	//=========== TODO ===================================================
-
+	if (current_url == url_stack.begin())
+		is_bottom = true;
 	//--------------------------------------------------------------------
-	
-	if (is_bottom) {
-		cout << left << setw(20) << prefix << "No tabs for backward!" << endl; 
+
+	if (is_bottom)
+	{
+		cout << left << setw(20) << prefix << "No tabs for backward!" << endl;
 		return;
 	}
 
-	//Go previous one.
+	// Go previous one.
 	//=========== TODO ===================================================
-
+	current_url--;
 	//--------------------------------------------------------------------
-	cout << left << setw(20) << prefix << "Backward to \"" << *current_url << "\"" << endl; 
+	cout << left << setw(20) << prefix << "Backward to \"" << *current_url << "\"" << endl;
 }
 
 /**
@@ -98,26 +107,30 @@ void Tab::backward() {
  *
  * TODO: Finish the code.
  */
-void Tab::forward() {
+void Tab::forward()
+{
 	string prefix = "Tab_" + to_string(id) + " Forward:";
 	bool is_top;
-	//Check if already at top of url stack.
+	// Check if already at top of url stack.
 	//=========== TODO ===================================================
-
+	if (current_url == prev(url_stack.end()))
+		is_top = true;
 	//--------------------------------------------------------------------
-	
-	if (is_top) {
-		cout << left << setw(20) << prefix << "No tabs for forward!" << endl; 
+
+	if (is_top)
+	{
+		cout << left << setw(20) << prefix << "No tabs for forward!" << endl;
 		return;
 	}
 
-	//Go next one.
+	// Go next one.
 	//=========== TODO ===================================================
-
+	current_url++;
 	//--------------------------------------------------------------------
-	cout << left << setw(20) << prefix << "Forward to \"" << *current_url << "\"" << endl; 
+	cout << left << setw(20) << prefix << "Forward to \"" << *current_url << "\"" << endl;
 }
 
-int Tab::get_id() const {
+int Tab::get_id() const
+{
 	return id;
 }

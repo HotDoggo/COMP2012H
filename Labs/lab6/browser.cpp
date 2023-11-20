@@ -26,8 +26,9 @@
  * Construct a browser. The default url when opening a new tab
  * is the home_url
  */
-Browser::Browser(Url home_url) {
-	cout << "Browser:    You have opened a browser." << endl; 
+Browser::Browser(Url home_url)
+{
+	cout << "Browser:    You have opened a browser." << endl;
 	this->home_url = home_url;
 }
 
@@ -36,13 +37,16 @@ Browser::Browser(Url home_url) {
  *
  * TODO: Finish the code.
  */
-Browser::~Browser() {
-	//Clean stuff.
+Browser::~Browser()
+{
+	// Clean stuff.
 	//=========== TODO ===================================================
-
+	for (vector<Tab *>::iterator it = tabs.begin(); it < tabs.end(); it++)
+		delete *it;
+	tabs.clear();
 	//--------------------------------------------------------------------
 
-	cout << "Browser:    You have closed the browser." << endl; 
+	cout << "Browser:    You have closed the browser." << endl;
 }
 
 /**
@@ -54,9 +58,12 @@ Browser::~Browser() {
  *
  * TODO: Finish the code.
  */
-Tab* Browser::open_tab() {
+Tab *Browser::open_tab()
+{
 	//=========== TODO ===================================================
-
+	Tab *tab = new Tab(tabs.size(), home_url);
+	tabs.push_back(tab);
+	return tab;
 	//--------------------------------------------------------------------
 }
 
@@ -65,24 +72,34 @@ Tab* Browser::open_tab() {
  *
  * TODO: Finish the code.
  */
-void Browser::close_tab(Tab* tab) {
+void Browser::close_tab(Tab *tab)
+{
 	bool found;
-	//Find the tab.
+	// Find the tab.
 	//=========== TODO ===================================================
-
+	vector<Tab *>::iterator it = tabs.begin();
+	for (tabs; it < tabs.end(); it++)
+	{
+		if (*it == tab)
+		{
+			found = true;
+			break;
+		}
+	}
 	//--------------------------------------------------------------------
 
-	if (!found) {
+	if (!found)
+	{
 		cout << "Browser:    Cannot find this tab for closing, something must be wrong!" << endl;
 		return;
 	}
 
 	cout << "Browser:    Closing Tab_" << tab->get_id() << endl;
-	//Clean stuff.
-//=========== TODO ===================================================
-
-//--------------------------------------------------------------------
-
+	// Clean stuff.
+	//=========== TODO ===================================================
+	delete *it;
+	tabs.erase(it);
+	//--------------------------------------------------------------------
 }
 
 /**
@@ -92,16 +109,26 @@ void Browser::close_tab(Tab* tab) {
  *
  * TODO: Finish the code.
  */
-Tab* Browser::get_tab(int id) {
-	bool found=false;
-	Tab* tab;
+Tab *Browser::get_tab(int id)
+{
+	bool found = false;
+	Tab *tab;
 
-	//Find the tab.
+	// Find the tab.
 	//=========== TODO ===================================================
-
+	for (vector<Tab *>::iterator it = tabs.begin(); it < tabs.end(); it++)
+	{
+		if ((*it)->get_id() == id)
+		{
+			found = true;
+			tab = *it;
+			break;
+		}
+	}
 	//--------------------------------------------------------------------
 
-	if (!found) {
+	if (!found)
+	{
 		cout << "Browser:    Cannot find this tab, something must be wrong!" << endl;
 		return nullptr;
 	}
