@@ -381,6 +381,9 @@ Combo *order_combo()
 	if (num_items < 2)
 	{
 		std::cout << "Insufficient number of items. Order cancelled." << std::endl;
+		delete burger;
+		delete fries;
+		delete drink;
 		return nullptr;
 	}
 

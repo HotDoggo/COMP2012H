@@ -1,11 +1,10 @@
-/** 
+/**
  * @file utils.cpp
  *
  * @brief Helper functions definitions.
- * 
+ *
  * This file defines some helper functions for parsing expressions.
  */
-
 
 #include "utils.h"
 
@@ -14,15 +13,13 @@
  *
  * If str is empty return false.
  */
-bool only_digits(const string& str) {
+bool only_digits(const string &str)
+{
 	bool out = false;
 
-//================ TODO ======================================================
-
-//Your Code Here
-
-
-//----------------------------------------------------------------------------
+	//================ TODO ======================================================
+	out = str.find_first_not_of("0123456789") == string::npos;
+	//----------------------------------------------------------------------------
 	return out;
 }
 
@@ -38,8 +35,7 @@ bool only_digits(const string& str) {
  */
 //================ TODO ======================================================
 
-//Your Code Here
-
+// Your Code Here
 
 //----------------------------------------------------------------------------
 
@@ -55,8 +51,7 @@ bool only_digits(const string& str) {
  */
 //================ TODO ======================================================
 
-//Your Code Here
-
+// Your Code Here
 
 //----------------------------------------------------------------------------
 
@@ -77,8 +72,7 @@ bool only_digits(const string& str) {
  */
 //================ TODO ======================================================
 
-//Your Code Here
-
+// Your Code Here
 
 //----------------------------------------------------------------------------
 
@@ -94,23 +88,21 @@ bool only_digits(const string& str) {
  */
 //================ TODO ======================================================
 
-//Your Code Here
-
+// Your Code Here
 
 //----------------------------------------------------------------------------
- 
+
 /**
  * Return a copy of str with all WHITESPACEs from two ends removed.
  *
  */
-string trim(const string& str) {
+string trim(const string &str)
+{
 	string trim = str;
-//================ TODO ======================================================
+	//================ TODO ======================================================
 
-//Your Code Here
+	// Your Code Here
 
-
-//----------------------------------------------------------------------------
+	//----------------------------------------------------------------------------
 	return trim;
 }
-
