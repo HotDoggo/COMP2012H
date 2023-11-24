@@ -19,25 +19,6 @@
 template <typename T>
 bool str_to_val(const string &str, Complex<T> &val)
 {
-    for (int pos = str.find_first_of("+-"); pos != string::npos; pos = str.find_first_of("+-", pos + 1))
-    {
-        string real_str = str.substr(0, pos);
-        if (real_str.empty())
-            continue;
-        string imaginary_str = str.substr(pos + 1);
-        imaginary_str = imaginary_str.substr(0, imaginary_str.size() - 1);
-
-        T real_num;
-        if (!str_to_val(real_str, real_num))
-            continue;
-        T imaginary_num;
-        if (!str_to_val(imaginary_str, imaginary_num))
-            continue;
-
-        val = Complex<T>(real_num, imaginary_num);
-        return true;
-    }
-
     if (str.back() == 'i')
     {
         string imaginary_string = str.substr(0, str.size() - 1);
