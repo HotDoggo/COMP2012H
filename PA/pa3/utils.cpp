@@ -12,13 +12,22 @@
  * Check if str only contains digits.
  *
  * If str is empty return false.
+ * more like only_digits + check if there multiple '.'s + check if its literally just '.'
  */
 bool only_digits(const string &str)
 {
 	bool out = false;
 
 	//================ TODO ======================================================
-	out = str.find_first_not_of("0123456789") == string::npos;
+	int temp = str.find_first_of("."), count = 0;
+	while (temp != string::npos)
+	{
+		count++;
+		temp = str.find_first_of(".", temp + 1);
+	}
+	out = str.find_first_not_of("0123456789.") == string::npos && !str.empty() && count <= 1;
+	if (count == 1 && str.size() == 1)
+		out = false;
 	//----------------------------------------------------------------------------
 	return out;
 }
@@ -34,9 +43,21 @@ bool only_digits(const string &str)
  * A string of int type must be non-empty and made of only digits.
  */
 //================ TODO ======================================================
-
-// Your Code Here
-
+template <>
+bool str_to_val(const string &str, int &val)
+{
+	if (only_digits(str) && (str.find('.') == string::npos))
+	{
+		size_t pos;
+		int temp = stoi(str, &pos);
+		if (str.size() == pos)
+		{
+			val = temp;
+			return true;
+		}
+	}
+	return false;
+}
 //----------------------------------------------------------------------------
 
 /**
@@ -50,9 +71,21 @@ bool only_digits(const string &str)
  * A string of long must be a string of type int.
  */
 //================ TODO ======================================================
-
-// Your Code Here
-
+template <>
+bool str_to_val(const string &str, long &val)
+{
+	if (only_digits(str) && (str.find('.') == string::npos))
+	{
+		size_t pos;
+		long temp = stol(str, &pos);
+		if (str.size() == pos)
+		{
+			val = temp;
+			return true;
+		}
+	}
+	return false;
+}
 //----------------------------------------------------------------------------
 
 /**
@@ -71,9 +104,21 @@ bool only_digits(const string &str)
  *   5. Otherwise, it is not.
  */
 //================ TODO ======================================================
-
-// Your Code Here
-
+template <>
+bool str_to_val(const string &str, float &val)
+{
+	if (only_digits(str))
+	{
+		size_t pos;
+		float temp = stof(str, &pos);
+		if (str.size() == pos)
+		{
+			val = temp;
+			return true;
+		}
+	}
+	return false;
+}
 //----------------------------------------------------------------------------
 
 /**
@@ -87,9 +132,21 @@ bool only_digits(const string &str)
  * A string of double type must be a string of float type.
  */
 //================ TODO ======================================================
-
-// Your Code Here
-
+template <>
+bool str_to_val(const string &str, double &val)
+{
+	if (only_digits(str))
+	{
+		size_t pos;
+		double temp = stod(str, &pos);
+		if (str.size() == pos)
+		{
+			val = temp;
+			return true;
+		}
+	}
+	return false;
+}
 //----------------------------------------------------------------------------
 
 /**
@@ -100,9 +157,10 @@ string trim(const string &str)
 {
 	string trim = str;
 	//================ TODO ======================================================
+	int start = str.find_first_not_of(WHITESPACE);
+	int end = str.find_last_not_of(WHITESPACE);
 
-	// Your Code Here
-
+	trim = start == string::npos ? "" : trim.substr(start, end - start + 1);
 	//----------------------------------------------------------------------------
 	return trim;
 }

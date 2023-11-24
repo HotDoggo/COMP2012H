@@ -198,9 +198,14 @@ class Combo : public OrderItem
 private:
 	std::string name;
 	int price;
+	Burger *burger;
+	Fries *fries;
+	Drink *drink;
 
 public:
 	Combo(Burger *burger, Fries *fries, Drink *drink);
+
+	~Combo();
 
 	virtual std::string get_name() const override final { return this->name; };
 

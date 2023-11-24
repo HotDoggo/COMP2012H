@@ -319,7 +319,7 @@ Drink *order_drink()
  * Member functions for the Combo class.
  */
 //=========== TODO ===================================================
-Combo::Combo(Burger *burger, Fries *fries, Drink *drink)
+Combo::Combo(Burger *burger, Fries *fries, Drink *drink) : burger(burger), fries(fries), drink(drink)
 {
 	std::vector<std::string> name_list;
 	int price = 0;
@@ -348,6 +348,13 @@ Combo::Combo(Burger *burger, Fries *fries, Drink *drink)
 
 	this->name = name;
 	this->price = price - (price / 10);
+}
+
+Combo::~Combo()
+{
+	delete burger;
+	delete fries;
+	delete drink;
 }
 //--------------------------------------------------------------------
 
