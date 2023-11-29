@@ -2,30 +2,32 @@
 using namespace std;
 #include "HashTable.h"
 
-
-int main() {
+int main()
+{
     // intHashTable
     HashTable<int> intHashTable(5);
 
-    for (int key = 0; key < 50; key++) {
+    for (int key = 0; key < 50; key++)
+    {
         intHashTable.insert(key);
     }
 
     cout << "Initial int hash table:" << endl;
     intHashTable.displayTable();
 
-    for (int key = 0; key < 50; key += 7) {
+    for (int key = 0; key < 50; key += 7)
+    {
         intHashTable.remove(key);
     }
 
     cout << "Int hash table after removing some elements:" << endl;
     intHashTable.displayTable();
 
-
     // charHashTable
     HashTable<char> charHashTable(3);
 
-    for (int key = 0; key < 25; key++) {
+    for (int key = 0; key < 25; key++)
+    {
         charHashTable.insert('a' + key);
         charHashTable.insert('A' + key);
     }
