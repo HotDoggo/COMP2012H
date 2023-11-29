@@ -28,6 +28,6 @@ opendatabase.h: opendatabase.tpp
 	g++ $(CPPFLAGS) -MMD -MP -c $< -o $@
 
 clean:;
-	rm *.o *.exe *.d
+	rm *.o PA4.exe *.d
 # del *.o *.exe *.d  #for Windows
 
