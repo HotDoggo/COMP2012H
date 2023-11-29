@@ -74,55 +74,33 @@ AVLNode<T> *AVLTree<T>::insert(AVLNode<T> *node, T key)
     // todo: complete the code
     // 1. BST insert
     if (node == nullptr)
-    {
-        // cout << "INSERTED" << endl;
         return new AVLNode<T>(key);
-    }
 
     if (key < node->key)
-    {
-        // cout << "INSERT LEFT" << endl;
         node->left = insert(node->left, key);
-    }
     else if (key > node->key)
-    {
-        // cout << "INSERT RIGHT" << endl;
         node->right = insert(node->right, key);
-    }
     else
         return node;
 
     // 2. update height
-    // cout << "NODE " << node->key;
-    // cout << ", HEIGHT " << height(node->left) << " " << height(node->right);
-    // cout << ", MAX " << max(height(node->left), height(node->right)) << endl;
     node->height = max(height(node->left), height(node->right)) + 1;
-    // cout << "NEW HEIGHT " << node->height << endl;
-    // node->height = height(node->left) > height(node->right) ? height(node->left) + 1 : height(node->right) + 1;
 
     // 3. check balance
     int balance = getBalance(node);
-    // cout << "BALANCE" << balance << endl;
 
     // left-left
     AVLNode<T> *temp;
     if (balance > 1 && getBalance(node->left) >= 0)
-    {
-        // cout << "BLL" << endl;
         node = rightRotate(node);
-    }
 
     // right-right
     else if (balance < -1 && getBalance(node->right) <= 0)
-    {
-        // cout << "BRR" << endl;
         node = leftRotate(node);
-    }
 
     // left-right
     else if (balance > 1 && getBalance(node->left) == -1)
     {
-        // cout << "BLR" << endl;
         node->left = leftRotate(node->left);
         node = rightRotate(node);
     }
@@ -130,7 +108,6 @@ AVLNode<T> *AVLTree<T>::insert(AVLNode<T> *node, T key)
     // right-left
     else if (balance < -1 && getBalance(node->right) == 1)
     {
-        // cout << "BRL" << endl;
         node->right = rightRotate(node->right);
         node = leftRotate(node);
     }
