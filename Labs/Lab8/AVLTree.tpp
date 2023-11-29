@@ -1,5 +1,3 @@
-// #define max(a, b) (a > b ? a : b)
-
 template <typename T>
 AVLNode<T>::AVLNode(T k) : key(k), height(1), left(nullptr), right(nullptr) {}
 
@@ -34,7 +32,7 @@ AVLNode<T> *AVLTree<T>::rightRotate(AVLNode<T> *y)
     // update height
     // x->height = max(height(x->left), height(x->right)) + 1;
     // y->height = max(height(y->left), height(y->right)) + 1;
-    // ^^^ problem of shame what the fuck i did this backwards oh my god i was stuck here for TWO DAYS
+    // ^^^ what the fuck i did this backwards oh my god i was stuck here for TWO DAYS
 
     y->height = max(height(y->left), height(y->right)) + 1;
     x->height = max(height(x->left), height(x->right)) + 1;
@@ -127,28 +125,30 @@ AVLNode<T> *AVLTree<T>::remove(AVLNode<T> *root, T key)
         root->left = remove(root->left, key);
     else if (key > root->key)
         root->right = remove(root->right, key);
-
-    // case 1:
-    else if (root->left == nullptr && root->right == nullptr)
-    {
-        delete root;
-        return nullptr;
-    }
-
-    // case 2:
-    else if (root->left == nullptr || root->right == nullptr)
-    {
-        AVLNode<T> *temp = root->left ? root->left : root->right;
-        delete root;
-        return temp;
-    }
-
-    // case 3:
     else
     {
-        root->key = minValueNode(root->right)->key;
-        root->right = remove(root->right, root->key);
+        if (root->left == nullptr || root->right == nullptr)
+        {
+            AVLNode<T> *temp = root->left ? root->left : root->right;
+            if (temp == nullptr)
+            {
+                temp = root;
+                root = nullptr;
+            }
+            else
+                *root = *temp;
+            delete temp;
+        }
+        else
+        {
+            AVLNode<T> *temp = minValueNode(root->right);
+            root->key = temp->key;
+            root->right = remove(root->right, root->key);
+        }
     }
+
+    if (root == nullptr)
+        return root;
 
     // 2. update height
     root->height = max(height(root->left), height(root->right)) + 1;
