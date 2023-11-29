@@ -1,0 +1,70 @@
+Select the directory hashing type: 
+1: Open addressing with linear probing
+2: Open addressing with quadratic probing
+3: Open addressing with double hashing (h2(K) = R - K % R)
+4: Linked list chaining
+		Harry(18)
+	Bethany(15)
+Gerald -> Caleb -> Adam(11)
+			Francis(10)
+		Eve(8)
+			Jason -> Iris(7)
+	Danny(6)
+Adam's phone number: 54321089
+Bethany's phone number: 56789012
+Caleb's phone number: 32567700
+Danny's phone number: 41457032
+Eve's phone number: 23586789
+Francis's phone number: 92031164
+Gerald's phone number: 56789000
+Harry's phone number: 31538930
+Iris's phone number: 77777777
+Jason's phone number: 55960212
+Wxyz's phone number: 0
+Adam removed: true
+Bethany removed: true
+Caleb removed: true
+Danny removed: true
+Eve removed: true
+Francis removed: true
+Gerald removed: true
+Harry removed: true
+Iris removed: true
+Jason removed: true
+Jason added: true
+Iris added: true
+Harry added: true
+Gerald added: true
+Francis added: true
+Eve added: true
+Danny added: true
+Caleb added: true
+Bethany added: true
+Adam added: true
+Adam is not added again: true
+Bethany is not added again: true
+Caleb is not added again: true
+Danny is not added again: true
+Eve is not added again: true
+Francis is not added again: true
+Gerald is not added again: true
+Harry is not added again: true
+Iris is not added again: true
+Jason is not added again: true
+	Harry(18)
+			Bethany(15)
+		Adam -> Caleb -> Gerald(11)
+			Francis(10)
+				Eve(8)
+Iris -> Jason(7)
+	Danny(6)
+Jason removed: true
+Iris removed: true
+Harry removed: true
+Gerald removed: true
+Francis removed: true
+Eve removed: true
+Danny removed: true
+Caleb removed: true
+Bethany removed: true
+Adam removed: true
