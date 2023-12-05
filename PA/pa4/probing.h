@@ -19,7 +19,7 @@ public:
         // TODO
         // Linear probing sequence: h(x, i) = x + offset(x, i) = x + i
         // index should be incremented as well
-        int offset = key + index;
+        int offset = index;
         index++;
         return offset;
     }
@@ -33,7 +33,7 @@ public:
         // TODO
         // Quadratic probing sequence: h(x, i) = x + offset(x, i) = x + i^2
         // index should be incremented as well
-        int offset = key + index * index;
+        int offset = index * index;
         index++;
         return offset;
     }
@@ -48,7 +48,7 @@ public:
         // TODO
         // Double hashing probing sequence: h(x, i) = x + offset(x, i) = x + i*(R - x % R)
         // index should be incremented as well
-        int offset = key + index * (R - index % R);
+        int offset = (R - (key % R)) * index;
         index++;
         return offset;
     }

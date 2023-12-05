@@ -54,7 +54,6 @@ private:
 
 public:
     ChainDatabase(int capacity);
-    ~ChainDatabase();
 
     virtual bool addPerson(const Person &person) override;
     virtual bool removePerson(const Person &person) override;

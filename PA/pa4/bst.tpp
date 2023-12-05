@@ -26,24 +26,18 @@ void BinarySearchTree<K, V>::print(int depth) const
 }
 
 // TODO: Implement BinarySearchTree's member functions
-
 template <typename K, typename V>
 BinarySearchTree<K, V>::~BinarySearchTree()
 {
-    // ============================== FIGURE THIS OUT LATER ========================================
-    if (!isEmpty())
+    if (root != nullptr)
         delete root;
-
-    // if (root->left.isEmpty())
-    //     delete root->left;
-    // if (root->right.isEmpty())
-    //     delete root->right;
 }
 
 template <typename K, typename V>
 BinarySearchTree<K, V>::BinarySearchTree(const BinarySearchTree<K, V> &bst)
 {
-    root = !bst.isEmpty() ? new TreeNode(bst.root) : nullptr;
+    if (!bst.isEmpty())
+        root = bst.root;
 }
 
 template <typename K, typename V>
@@ -93,6 +87,7 @@ void BinarySearchTree<K, V>::insert(const K &key, const V &value)
 template <typename K, typename V>
 void BinarySearchTree<K, V>::remove(const K &key)
 {
+    // cout << root->key << endl;
     if (root == nullptr)
         return;
 
@@ -100,11 +95,13 @@ void BinarySearchTree<K, V>::remove(const K &key)
         root->left.remove(key);
     else if (key > root->key)
         root->right.remove(key);
+
     else
     {
-        if (root->left.isEmpty() || root->right.isEmpty())
+        if (root->left.root == nullptr || root->right.root == nullptr)
         {
-            TreeNode *temp = root->left.isEmpty() ? new TreeNode(root->left.root) : new TreeNode(root->right.root);
+            // cout << "here" << endl;
+            TreeNode *temp = root->left.root ? root->left.root : root->right.root;
             if (temp == nullptr)
             {
                 temp = root;
@@ -112,13 +109,38 @@ void BinarySearchTree<K, V>::remove(const K &key)
             }
             else
                 *root = *temp;
+            // cout << temp->key << endl;
             delete temp;
         }
         else
         {
-            TreeNode *temp = root->right.findMin();
-            root->key = temp->key;
-            root->right.remove(root->key);
+            K min_key = root->right.findMin();
+            // cout << min_key << endl;
+            root->key = min_key;
+            root->value = root->right.getValue(min_key);
+            // cout << root->key << root->value << endl;
+            root->right.remove(min_key);
         }
     }
+
+    // if (root->left.isEmpty() || root->right.isEmpty())
+    // {
+    //     TreeNode *temp = root->left.isEmpty() ? root->left.root : root->right.root;
+
+    //     if (temp == nullptr)
+    //     {
+    //         temp = root;
+    //         root = nullptr;
+    //     }
+    //     else
+    //         *root = *temp;
+    //     delete temp;
+    // }
+    // else
+    // {
+    //     K min_key = root->right.findMin();
+    //     root->key = min_key;
+    //     root->value = root->right.getValue(min_key);
+    //     root->right.remove(min_key);
+    // }
 }

@@ -35,10 +35,12 @@ vector<Person> pList = {
                 2(2)
                         1(1)
 */
-void test11() {
+void test11()
+{
     BinarySearchTree<int, int> bst;
     vector<int> vals = {8, 4, 12, 2, 10, 6, 14, 1, 7, 11, 15, 5};
-    for (int i=0; i<vals.size(); ++i) {
+    for (int i = 0; i < vals.size(); ++i)
+    {
         bst.insert(vals[i], vals[i]);
     }
     bst.print();
@@ -48,10 +50,12 @@ void test11() {
 11 exists: true
 13 exists: false
 */
-void test12() {
+void test12()
+{
     BinarySearchTree<int, int> bst;
     vector<int> vals = {8, 4, 12, 2, 10, 6, 14, 1, 7, 11, 15, 5};
-    for (int i=0; i<vals.size(); ++i) {
+    for (int i = 0; i < vals.size(); ++i)
+    {
         bst.insert(vals[i], vals[i]);
     }
     cout << "11 exists: " << bst.contains(11) << endl;
@@ -70,10 +74,13 @@ void test12() {
         4(4)
                 1(1)
 */
-void test13() {
+void test13()
+{
+    cout << "test13" << endl;
     BinarySearchTree<int, int> bst;
     vector<int> vals = {8, 4, 12, 2, 10, 6, 14, 1, 7, 11, 15, 5};
-    for (int i=0; i<vals.size(); ++i) {
+    for (int i = 0; i < vals.size(); ++i)
+    {
         bst.insert(vals[i], vals[i]);
     }
     bst.remove(2);
@@ -93,10 +100,12 @@ void test13() {
                 2(2)
                         1(1)
 */
-void test14() {
+void test14()
+{
     BinarySearchTree<int, int> bst;
     vector<int> vals = {8, 4, 12, 2, 10, 6, 14, 1, 7, 11, 15, 5};
-    for (int i=0; i<vals.size(); ++i) {
+    for (int i = 0; i < vals.size(); ++i)
+    {
         bst.insert(vals[i], vals[i]);
     }
     bst.remove(4);
@@ -120,10 +129,12 @@ void test14() {
 min key: 2
 value of key 8: 64
 */
-void test15() {
+void test15()
+{
     BinarySearchTree<int, int> bst;
     vector<int> vals = {8, 4, 12, 2, 10, 6, 14, 3, 7, 11, 15, 5};
-    for (int i=0; i<vals.size(); ++i) {
+    for (int i = 0; i < vals.size(); ++i)
+    {
         bst.insert(vals[i], vals[i] * vals[i] % 137);
     }
     bst.print();
@@ -150,9 +161,11 @@ Gerald -> Caleb -> Adam(11)
                         Jason -> Iris(7)
         Danny(6)
 */
-void test21() {
-    ChainDatabase db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test21()
+{
+    ChainDatabase db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         cout << "Added " << pList[i].name << ": " << db.addPerson(pList[i]) << endl;
     }
     db.print();
@@ -161,9 +174,11 @@ void test21() {
 /*
 Re-added Francis: false
 */
-void test22() {
-    ChainDatabase db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test22()
+{
+    ChainDatabase db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         db.addPerson(pList[i]);
     }
     cout << "Re-added " << pList[5].name << ": " << db.addPerson(pList[5]) << endl;
@@ -174,14 +189,17 @@ Francis's phone number: 92031164
 Francis's actual phone number: 92031164
 Wxyz's phone number: 0
 */
-void test23() {
-    ChainDatabase db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test23()
+{
+    ChainDatabase db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         bool added = db.addPerson(pList[i]);
     }
     cout << pList[5].name << "'s phone number: " << db.getPhoneNumber(pList[5].name) << endl;
     cout << pList[5].name << "'s actual phone number: " << pList[5].phoneNumber << endl;
-    cout << "Wxyz" << "'s phone number: " << db.getPhoneNumber("Wxyz") << endl;
+    cout << "Wxyz"
+         << "'s phone number: " << db.getPhoneNumber("Wxyz") << endl;
 }
 
 /*
@@ -194,9 +212,11 @@ Caleb -> Adam(11)
                         Jason -> Iris(7)
         Danny(6)
 */
-void test24() {
-    ChainDatabase db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test24()
+{
+    ChainDatabase db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         bool added = db.addPerson(pList[i]);
     }
     cout << "Removed " << pList[6].name << ": " << db.removePerson(pList[6]) << endl;
@@ -221,9 +241,11 @@ Caleb -> Gerald -> Adam(11)
                         Jason -> Iris(7)
         Danny(6)
 */
-void test25() {
-    ChainDatabase db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test25()
+{
+    ChainDatabase db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         bool added = db.addPerson(pList[i]);
     }
     cout << "Removed " << pList[2].name << ": " << db.removePerson(pList[2]) << endl;
@@ -235,39 +257,45 @@ void test25() {
 /*
 Linear probing sequence: 5 6 7 8 9
 */
-void test31() {
+void test31()
+{
     int key = 5;
     int index = 0;
     cout << "Linear probing sequence: ";
-    for (int i=0; i<5; ++i) {
+    for (int i = 0; i < 5; ++i)
+    {
         cout << key + LinearProbing::offset(key, index) << " ";
-    } 
+    }
     cout << endl;
 }
 
 /*
 Quadratic probing sequence: 5 6 9 14 21
 */
-void test32() {
+void test32()
+{
     int key = 5;
     int index = 0;
     cout << "Quadratic probing sequence: ";
-    for (int i=0; i<5; ++i) {
+    for (int i = 0; i < 5; ++i)
+    {
         cout << key + QuadraticProbing::offset(key, index) << " ";
-    } 
+    }
     cout << endl;
 }
 
 /*
 Double hashing probing sequence with R = 7: 5 7 9 11 13
 */
-void test33() {
+void test33()
+{
     int key = 5;
     int index = 0;
     cout << "Double hashing probing sequence with R = 7: ";
-    for (int i=0; i<5; ++i) {
+    for (int i = 0; i < 5; ++i)
+    {
         cout << key + DoubleHashing<7>::offset(key, index) << " ";
-    } 
+    }
     cout << endl;
 }
 
@@ -293,9 +321,11 @@ Adam(11)
                         Iris(7)
         Danny(6)
 */
-void test41() {
-    OpenDatabase<LinearProbing> db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test41()
+{
+    OpenDatabase<LinearProbing> db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         cout << "Added " << pList[i].name << ": " << db.addPerson(pList[i]) << endl;
     }
     db.print();
@@ -323,9 +353,11 @@ Adam(11)
         Danny(6)
                 Gerald(0)
 */
-void test42() {
-    OpenDatabase<QuadraticProbing> db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test42()
+{
+    OpenDatabase<QuadraticProbing> db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         cout << "Added " << pList[i].name << ": " << db.addPerson(pList[i]) << endl;
     }
     db.print();
@@ -353,9 +385,11 @@ Adam(11)
                         Iris(7)
         Danny(6)
 */
-void test43() {
-    OpenDatabase<DoubleHashing<17>> db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test43()
+{
+    OpenDatabase<DoubleHashing<17>> db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         cout << "Added " << pList[i].name << ": " << db.addPerson(pList[i]) << endl;
     }
     db.print();
@@ -364,9 +398,11 @@ void test43() {
 /*
 Re-added Francis: false
 */
-void test44() {
-    OpenDatabase<LinearProbing> db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test44()
+{
+    OpenDatabase<LinearProbing> db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         db.addPerson(pList[i]);
     }
     cout << "Re-added " << pList[5].name << ": " << db.addPerson(pList[5]) << endl;
@@ -377,14 +413,17 @@ Francis's phone number: 92031164
 Francis's actual phone number: 92031164
 Wxyz's phone number: 0
 */
-void test45() {
-    OpenDatabase<QuadraticProbing> db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test45()
+{
+    OpenDatabase<QuadraticProbing> db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         bool added = db.addPerson(pList[i]);
     }
     cout << pList[5].name << "'s phone number: " << db.getPhoneNumber(pList[5].name) << endl;
     cout << pList[5].name << "'s actual phone number: " << pList[5].phoneNumber << endl;
-    cout << "Wxyz" << "'s phone number: " << db.getPhoneNumber("Wxyz") << endl;
+    cout << "Wxyz"
+         << "'s phone number: " << db.getPhoneNumber("Wxyz") << endl;
 }
 
 /*
@@ -400,9 +439,11 @@ Adam(11)
                         Iris(7)
         Danny(6)
 */
-void test46() {
-    OpenDatabase<DoubleHashing<17>> db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test46()
+{
+    OpenDatabase<DoubleHashing<17>> db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         bool added = db.addPerson(pList[i]);
     }
     cout << "Removed " << pList[6].name << ": " << db.removePerson(pList[6]) << endl;
@@ -433,9 +474,11 @@ Adam(11)
                         Iris(7)
         Danny(6)
 */
-void test47() {
-    OpenDatabase<LinearProbing> db {20};
-    for (int i=0; i<pList.size(); ++i) {
+void test47()
+{
+    OpenDatabase<LinearProbing> db{20};
+    for (int i = 0; i < pList.size(); ++i)
+    {
         bool added = db.addPerson(pList[i]);
     }
     cout << "Removed " << pList[2].name << ": " << db.removePerson(pList[2]) << endl;
@@ -444,34 +487,76 @@ void test47() {
     db.print();
 }
 
-int main() {
+int main()
+{
     cout << boolalpha;
     int choice;
     cin >> choice;
-    
-    switch (choice) {
-        case 11: test11(); break;
-        case 12: test12(); break;
-        case 13: test13(); break;
-        case 14: test14(); break;
-        case 15: test15(); break;
-        case 21: test21(); break;
-        case 22: test22(); break;
-        case 23: test23(); break;
-        case 24: test24(); break;
-        case 25: test25(); break;
-        case 31: test31(); break;
-        case 32: test32(); break;
-        case 33: test33(); break;
-        case 41: test41(); break;
-        case 42: test42(); break;
-        case 43: test43(); break;
-        case 44: test44(); break;
-        case 45: test45(); break;
-        case 46: test46(); break;
-        case 47: test47(); break;
-        default:
-            cout << "Unrecognized test case" << endl;
-            break;
+
+    switch (choice)
+    {
+    case 11:
+        test11();
+        break;
+    case 12:
+        test12();
+        break;
+    case 13:
+        test13();
+        break;
+    case 14:
+        test14();
+        break;
+    case 15:
+        test15();
+        break;
+    case 21:
+        test21();
+        break;
+    case 22:
+        test22();
+        break;
+    case 23:
+        test23();
+        break;
+    case 24:
+        test24();
+        break;
+    case 25:
+        test25();
+        break;
+    case 31:
+        test31();
+        break;
+    case 32:
+        test32();
+        break;
+    case 33:
+        test33();
+        break;
+    case 41:
+        test41();
+        break;
+    case 42:
+        test42();
+        break;
+    case 43:
+        test43();
+        break;
+    case 44:
+        test44();
+        break;
+    case 45:
+        test45();
+        break;
+    case 46:
+        test46();
+        break;
+    case 47:
+        test47();
+        break;
+    default:
+        cout << "Unrecognized test case" << endl;
+        break;
     }
 }

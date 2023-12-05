@@ -9,9 +9,9 @@ void OpenDatabase<P>::print() const
 template <typename P>
 unsigned int OpenDatabase<P>::getPhoneNumber(const std::string &name) const
 {
-    unsigned int key = hashString(name) % getCapacity();
-
     int index = 0;
+    unsigned int key = (hashString(name) + P::offset(hashString(name), index)) % getCapacity();
+
     while (index < getCapacity())
     {
         if (tree.contains(key))
@@ -20,7 +20,7 @@ unsigned int OpenDatabase<P>::getPhoneNumber(const std::string &name) const
                 return tree.getValue(key).person.phoneNumber;
         }
 
-        P::offset(key, index);
+        key = (hashString(name) + P::offset(hashString(name), index)) % getCapacity();
     }
 
     return 0;
@@ -32,27 +32,27 @@ bool OpenDatabase<P>::addPerson(const Person &person)
     if (getPhoneNumber(person.name))
         return false;
 
-    unsigned int key = person.hash() % getCapacity();
-
     int index = 0;
+    unsigned int key = (person.hash() + P::offset(person.hash(), index)) % getCapacity();
+    OpenDBnode new_node{person, false};
     while (index < getCapacity())
     {
+        // cout << key << endl;
         if (tree.contains(key))
         {
-            if (tree.getValue(key).deleted)
+            if (tree.getValue(key).deleted == true)
             {
-                tree.remove(key);
-                tree.insert(key, new OpenDBnode{person, false});
+                tree.getValue(key).deleted = false;
                 return true;
             }
         }
         else
         {
-            tree.insert(key, new OpenDBnode{person, false});
+            tree.insert(key, new_node);
             return true;
         }
 
-        P::offset(key, index);
+        key = (person.hash() + P::offset(person.hash(), index)) % getCapacity();
     }
 
     return false;
@@ -64,22 +64,20 @@ bool OpenDatabase<P>::removePerson(const Person &person)
     if (!getPhoneNumber(person.name))
         return false;
 
-    unsigned int key = person.hash() % getCapacity();
-
     int index = 0;
+    unsigned int key = (person.hash() + P::offset(person.hash(), index)) % getCapacity();
     while (index < getCapacity())
     {
         if (tree.contains(key))
         {
             if (tree.getValue(key).person == person && !tree.getValue(key).deleted)
             {
-                tree.remove(key);
-                tree.insert(key, new OpenDBnode{person, true});
+                tree.getValue(key).deleted = true;
                 return true;
             }
         }
 
-        P::offset(key, index);
+        key = (person.hash() + P::offset(person.hash(), index)) % getCapacity();
     }
 
     return false;

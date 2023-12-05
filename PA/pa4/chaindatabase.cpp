@@ -23,14 +23,10 @@ void ChainDatabase::print() const
 }
 
 // TODO: Implement ChainDatabase's member functions
-ChainDatabase::~ChainDatabase()
-{
-    // ChainDBnode* cur =
-}
-
 unsigned int ChainDatabase::getPhoneNumber(const std::string &name) const
 {
     unsigned int key = hashString(name) % getCapacity();
+    // cout << name << key << endl;
 
     if (!tree.contains(key))
         return 0;
@@ -57,11 +53,12 @@ bool ChainDatabase::addPerson(const Person &person)
     if (tree.contains(key))
     {
         new_node->next = tree.getValue(key);
-        tree.remove(key);
+        tree.getValue(key) = new_node;
     }
+    else
+        tree.insert(key, new_node);
 
-    tree.insert(key, new_node);
-
+    // cout << tree.getValue(key) << endl;
     return true;
 }
 
@@ -83,10 +80,9 @@ bool ChainDatabase::removePerson(const Person &person)
         else
         {
             ChainDBnode *temp = cur->next;
-            tree.remove(key);
-            tree.insert(key, temp);
+            tree.getValue(key) = temp;
+            delete cur;
         }
-        delete cur;
         return true;
     }
 
