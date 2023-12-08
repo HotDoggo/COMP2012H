@@ -13,8 +13,26 @@ std::ostream &operator<<(std::ostream &os, ChainDBnode *node)
     return os;
 }
 
+template <>
+BinarySearchTree<unsigned int, ChainDBnode *>::~BinarySearchTree()
+{
+    if (root != nullptr)
+    {
+        ChainDBnode *cur = root->value;
+        while (cur)
+        {
+            ChainDBnode *temp = cur;
+            cur = cur->next;
+            delete temp;
+        }
+        delete root;
+    }
+}
+
 // Provided constructor
-ChainDatabase::ChainDatabase(int capacity) : Database(capacity), tree() {}
+ChainDatabase::ChainDatabase(int capacity) : Database(capacity), tree()
+{
+}
 
 // This function is provided to print the tree for visualizing
 void ChainDatabase::print() const
@@ -23,6 +41,7 @@ void ChainDatabase::print() const
 }
 
 // TODO: Implement ChainDatabase's member functions
+
 unsigned int ChainDatabase::getPhoneNumber(const std::string &name) const
 {
     unsigned int key = hashString(name) % getCapacity();

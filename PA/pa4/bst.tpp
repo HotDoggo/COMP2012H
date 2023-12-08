@@ -60,6 +60,7 @@ const K &BinarySearchTree<K, V>::findMin() const
 {
     if (root->left.isEmpty())
         return root->key;
+
     return root->left.findMin();
 }
 
@@ -95,52 +96,26 @@ void BinarySearchTree<K, V>::remove(const K &key)
         root->left.remove(key);
     else if (key > root->key)
         root->right.remove(key);
-
     else
     {
-        if (root->left.root == nullptr || root->right.root == nullptr)
+        if (root->left.isEmpty() & root->right.isEmpty())
         {
-            // cout << "here" << endl;
-            TreeNode *temp = root->left.root ? root->left.root : root->right.root;
-            if (temp == nullptr)
-            {
-                temp = root;
-                root = nullptr;
-            }
-            else
-                *root = *temp;
-            // cout << temp->key << endl;
-            delete temp;
+            delete root;
+            root = nullptr;
+        }
+        else if (!root->left.isEmpty() && !root->right.isEmpty())
+        {
+            root->key = root->right.findMin();
+            root->value = root->right.getValue(root->key);
+            root->right.remove(root->key);
         }
         else
         {
-            K min_key = root->right.findMin();
-            // cout << min_key << endl;
-            root->key = min_key;
-            root->value = root->right.getValue(min_key);
-            // cout << root->key << root->value << endl;
-            root->right.remove(min_key);
+            TreeNode *temp = root->left.isEmpty() ? root->right.root : root->left.root;
+            root->right.root = nullptr;
+            root->left.root = nullptr;
+            delete root;
+            root = temp;
         }
     }
-
-    // if (root->left.isEmpty() || root->right.isEmpty())
-    // {
-    //     TreeNode *temp = root->left.isEmpty() ? root->left.root : root->right.root;
-
-    //     if (temp == nullptr)
-    //     {
-    //         temp = root;
-    //         root = nullptr;
-    //     }
-    //     else
-    //         *root = *temp;
-    //     delete temp;
-    // }
-    // else
-    // {
-    //     K min_key = root->right.findMin();
-    //     root->key = min_key;
-    //     root->value = root->right.getValue(min_key);
-    //     root->right.remove(min_key);
-    // }
 }

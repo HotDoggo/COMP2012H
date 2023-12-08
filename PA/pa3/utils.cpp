@@ -12,7 +12,6 @@
  * Check if str only contains digits.
  *
  * If str is empty return false.
- * more like only_digits + check if there multiple '.'s + check if its literally just '.'
  */
 bool only_digits(const string &str)
 {
